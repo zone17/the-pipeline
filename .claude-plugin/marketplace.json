@@ -1,0 +1,17 @@
+{
+  "name": "the-pipeline",
+  "owner": {
+    "name": "fp"
+  },
+  "metadata": {
+    "description": "The Pipeline — skills for moving an idea from raw thought to shipped reality.",
+    "version": "0.2.0"
+  },
+  "plugins": [
+    {
+      "name": "the-pipeline",
+      "source": "./",
+      "description": "Skills that take an idea from raw thought to shipped reality. First skill: product-idea (Amazon Working Backwards PR/FAQ in the voice of Ivy Lee & Edward Bernays)."
+    }
+  ]
+}
