@@ -1,6 +1,6 @@
 {
   "name": "the-pipeline",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "The Pipeline — a collection of skills that take an idea from raw thought to shipped reality. product-idea turns an idea into an Amazon Working Backwards PR/FAQ; discovery pressure-tests that PR/FAQ with real research into a sharp problem and a falsifiable bet.",
   "author": {
     "name": "fp"

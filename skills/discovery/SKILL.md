@@ -164,22 +164,110 @@ Close with an explicit verdict and the handoff:
 
 ## Research tooling
 
-Use the best research capability available, in this order:
+Run discovery the way an **elite, multidisciplinary research team** would — never one search
+summarized off the first page. **Fan out multiple independent threads in parallel**, each
+owned by a different specialist lens and pulling from a different *class* of source, then
+**converge, triangulate, and adversarially verify**. Breadth across domains and source types
+is what separates a sharp, defensible bet from a confident guess. The orchestration below is
+the same in every environment; only the tools change.
 
-1. **The `deep-research` skill** — preferred for the synthesis. Hand it a *sharply scoped*
-   question (e.g. "How large and underserved is [specific problem] for [specific segment],
-   who are the real alternatives, and why now?"), not the whole idea. It fans out searches,
-   fetches sources, adversarially verifies, and returns a cited report. Run it once per
-   major research thread (problem reality, market/TAM, competition) rather than one giant
-   query.
-2. **The `ce-web-researcher` agent** (compound-engineering) — strong structured web
-   research if `deep-research` isn't available; spawn it per thread.
-3. **`jina` and `firecrawl` tools, plus WebSearch/WebFetch** — for targeted lookups,
-   reading specific competitor pages/docs, recent-news scans, and pulling concrete numbers.
-4. **`last30days`** — when recency matters (fast-moving markets, "why now").
+### The research threads (one per "specialist" — run them in parallel, not in sequence)
 
-Always cite sources in the synthesis. If no research tooling is reachable, say so, proceed
-from reasoning and the user's input, and mark the synthesis confidence as Low throughout.
+Scope each thread to a *sharp* question, never the whole idea. At minimum cover the threads
+that bear on the load-bearing claims:
+
+- **Problem & JTBD reality** — is the pain real, frequent, and urgent for the named segment?
+  Jobs-to-be-done, real workflows, switching triggers.
+- **Customer voice** — first-hand signal from where the segment actually talks: forums,
+  Reddit/HN, app-store and G2/Capterra reviews, support threads, community Discords, social.
+  Weight observed behavior and complaints over stated opinion.
+- **Market & sizing** — TAM/SAM/SOM with real arithmetic, growth rate, adjacent-market
+  spillover; industry/analyst reports where they exist.
+- **Competitive & alternatives** — direct competitors *and* non-consumption, manual
+  workarounds, and incumbents' roadmaps. Read primary sources (their docs, pricing,
+  changelogs, job posts), not listicles.
+- **Technology & feasibility — the cutting edge** — the current frontier and what *just*
+  became newly possible: academic & preprint literature (arXiv/SSRN/scholar), patents,
+  technical blogs, open-source state of the art. "Why now" is usually won or lost here.
+- **Timing / "why now"** — shifts in the last 6–18 months (regulatory, cost-curve,
+  behavioral, platform) that open the window *now* rather than two years ago or two from now.
+- **Economics & pricing** — unit-cost drivers, comparable pricing/margins/CAC benchmarks,
+  willingness-to-pay signals.
+- **Regulatory / ethical / risk** — constraints, compliance, data/privacy, and failure
+  modes that could kill the bet.
+
+Add **domain-specific threads** whenever the bet lives in a vertical (e.g. clinical evidence
+for health, on-chain & market data for fintech, scientific literature for deep tech,
+procurement cycles for govtech). An elite team brings in the right specialist per domain.
+
+### Source modalities to span (don't over-index on any one)
+
+General web search · academic & preprint (arXiv, SSRN, scholar) · patents · primary
+competitor docs / pricing / changelogs / job posts · industry & analyst reports · news &
+recency scans · practitioner & expert long-form · community & review sites · and **domain
+data sources** (financial, scientific, government/statistics) when relevant. A claim that
+survives across *multiple* modalities is far stronger than one that appears in many pages of
+the same kind.
+
+### Tooling by environment
+
+Use the strongest stack available — the thread plan above does not change.
+
+**In Claude Code (full power — orchestrate a real fan-out):**
+1. **`deep-research` skill** — the workhorse for each major thread. Hand it ONE *sharply
+   scoped* question per thread (problem reality, sizing, competition, frontier-tech,
+   why-now) — never the whole idea. It fans out searches, fetches sources, adversarially
+   verifies, and returns a cited report. **Run several in parallel**, one per thread, like a
+   team working concurrently.
+2. **Parallel research agents / `Workflow` fan-out** — spawn multiple `ce-web-researcher`
+   agents (or author a `Workflow` that pipelines thread → verify) so threads run
+   concurrently and independently. Give each agent a **distinct lens** so they don't
+   converge on the same handful of sources — diversity of angle is the point.
+3. **`jina`** — `parallel_search_web` for broad multi-query sweeps, `search_arxiv` /
+   `search_ssrn` for the academic/frontier thread, `parallel_read_url` to pull many primary
+   sources at once, `search_images` / screenshots for product teardowns.
+4. **`firecrawl`** — crawl and scrape competitor sites, docs, and pricing pages for
+   primary-source numbers rather than secondary summaries.
+5. **`last30days`** — the recency / "why now" thread in fast-moving markets.
+6. **Domain MCP servers** — when the bet is vertical, pull *real data* (e.g. financial-data,
+   scientific, or government-statistics MCP) instead of relying on prose.
+7. **`WebSearch` / `WebFetch`** — targeted gap-filling and reading specific pages.
+
+Default to running the threads **concurrently** (parallel agents or a `Workflow`), then
+synthesize once all return — that is what makes this an elite *team* rather than one
+researcher doing serial lookups.
+
+**In Claude Cowork / Claude Desktop:**
+- Lead with Cowork's **native web search + fetch** (server-side; works on search results and
+  shared URLs). Run the same multi-thread plan — issue many scoped searches across the
+  threads above rather than one broad query.
+- Add **MCP connectors** for heavier research where connected (e.g. `jina`, `firecrawl`, or
+  domain-data servers) via **Customize → Connectors** — this is how you recover
+  academic/parallel-read/crawl power and domain data.
+- The Claude-Code-only skills and agents above (`deep-research`, `last30days`,
+  `ce-web-researcher`, `Workflow`) **do not exist here.** Replicate their effect by running
+  the thread plan yourself across many native searches plus connectors, and keep the exact
+  same triangulation and verification discipline.
+
+**Anywhere else (API / Agent SDK):** use the `WebSearch` tool plus any attached MCP research
+servers, following the same thread plan.
+
+### Cross-cutting discipline (non-negotiable, every environment)
+
+- **Triangulate** — a claim earns "Fact / High confidence" only with ≥2 *independent*
+  sources; a single source → Med; anecdote or assumption → Low.
+- **Adversarially verify the load-bearing claims** — for anything the bet depends on,
+  actively try to **refute** it (search for disconfirming evidence and the strongest
+  counter-case); don't just collect confirmations.
+- **Separate fact from inference**, and **cite every factual claim** with a source + date.
+- **Check recency** — flag stale sources; for "why now," prefer the last 6–18 months.
+- **Prefer primary and behavioral sources** over secondary summaries and stated intent.
+- **Span domains** — if every source is the same type (all blogs, or all vendor pages), the
+  thread isn't done; pull at least one orthogonal modality before trusting it.
+
+If no research tooling is reachable at all, say so explicitly, proceed from reasoning and the
+user's input, mark the synthesis confidence **Low** throughout, and tell the user exactly
+which searches would raise it.
 
 ## Output format
 

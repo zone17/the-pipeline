@@ -70,6 +70,20 @@ After installing, the two skills appear in your skill list and trigger automatic
 your request matches them (see **Usage** below). No restart needed in recent Claude Code
 versions; reload if they don't show up.
 
+### In Claude Cowork / Claude Desktop
+
+The same plugin works in Claude Cowork (Claude Desktop for macOS/Windows, paid plans). No
+repackaging needed — it installs from this GitHub repo:
+
+1. Open the **Cowork** tab, then **Customize** in the left sidebar.
+2. Open the **Plugins** tab → add a marketplace from a **GitHub repository / git URL**:
+   `https://github.com/zone17/the-pipeline`
+3. **Install** `the-pipeline`.
+
+You can also share it with a colleague by sending them the plugin file to upload directly.
+`product-idea` runs identically; `discovery` adapts to Cowork's native web search and any
+research **MCP connectors** you've added (its research instructions are environment-aware).
+
 ---
 
 ## Usage
