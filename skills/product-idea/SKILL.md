@@ -72,9 +72,11 @@ gate exists for.
 
 When you are running non-interactively (a workflow prompt step, a headless session, or
 any context where the user cannot answer now), write the questions to
-`docs/PRFAQ-INTAKE.md` in the project (one question per line, plus a one-line note that
-the PR/FAQ was not written because the brief was incomplete) and **return without
-writing `docs/PRFAQ.md`** so the pipeline's status scan keeps the phase incomplete. Never
+`docs/intake/prfaq-questions.md` in the project (one question per line, plus a one-line
+note that the PR/FAQ was not written because the brief was incomplete) and **return
+without writing `docs/PRFAQ.md`** so the pipeline's status scan keeps the phase
+incomplete. The path matters: anything matching `docs/PRFAQ*.md` or `docs/prfaq*.md` is
+counted by the status scanner as a finished PR/FAQ, so never write intake notes there. Never
 produce a placeholder or partial PR/FAQ; the scanner treats any non-empty PR/FAQ file as a
 finished bet.
 
