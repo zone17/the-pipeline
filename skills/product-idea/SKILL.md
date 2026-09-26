@@ -55,19 +55,36 @@ PR/FAQ must answer are:
 4. **How do we know customers want this?** (and would they change behavior to adopt it?)
 5. **What does the experience look like, and is the market big enough to matter?**
 
-If the idea already implies confident answers to most of these, **proceed and generate
-the full PR/FAQ immediately** — invent realistic specifics where the user left gaps,
-then surface them in a short "Assumptions I made" list at the top so the user can
-correct anything that's off. People move faster correcting a concrete draft than
-answering an abstract questionnaire.
+**Hard intake gate — the first three questions are mandatory input, never inferred.**
+Before writing a word of the release, confirm the input states, in the user's own words:
 
-Only stop to ask questions when the idea is **critically underspecified** — when you
-genuinely cannot tell who the customer is or what problem is being solved, and any guess
-would be a coin flip. In that case ask the two or three questions you truly can't
-proceed without, not a full interview.
+1. **Who the customer is** (a specific segment),
+2. **What problem they have**, and
+3. **What the single most important benefit is** (or at least the shape of the solution).
 
-When in doubt, lean toward generating. A flagged assumption is more useful to the user
-than a question.
+If any of those three is missing, **stop and ask for exactly the missing ones.** Do not
+generate. Do not pick a product category, customer, or problem on the user's behalf, and
+do not paper over the gap with an "Assumptions I made" list — a fabricated bet sends
+every downstream phase (discovery, design, constitution) off to test a product nobody
+proposed, which costs far more to reject than a question costs to ask. **A product name
+alone (e.g. "Apartment Art", "Melinda") is never sufficient input**; it is the case this
+gate exists for.
+
+When you are running non-interactively (a workflow prompt step, a headless session, or
+any context where the user cannot answer now), write the questions to
+`docs/intake/prfaq-questions.md` in the project (one question per line, plus a one-line
+note that the PR/FAQ was not written because the brief was incomplete) and **return
+without writing `docs/PRFAQ.md`** so the pipeline's status scan keeps the phase
+incomplete. The path matters: anything matching `docs/PRFAQ*.md` or `docs/prfaq*.md` is
+counted by the status scanner as a finished PR/FAQ, so never write intake notes there. Never
+produce a placeholder or partial PR/FAQ; the scanner treats any non-empty PR/FAQ file as a
+finished bet.
+
+Once questions 1–3 are answered, questions 4 and 5 (evidence of demand; experience and
+market size) may be filled with **realistic, clearly labeled estimates** and surfaced in a
+short "Assumptions I made" list at the top, so the user corrects a concrete draft rather
+than answering an abstract questionnaire. That list is for numbers and specifics, never
+for the customer, the problem, or the product category.
 
 ### 2. Write the press release (one page, future-dated, already-launched voice)
 
